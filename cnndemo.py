@@ -6,6 +6,7 @@ from mynn.layers.softmax import Softmax
 from mynn.layers.relu import Relu
 from mynn.dataset import mnist
 from mynn.model import model
+import time
 images, labels = mnist.load_mnist('./data/mnist')
 test_images, test_labels = mnist.load_mnist('./data/mnist', 't10k')
 batch_size = 64
@@ -52,7 +53,7 @@ for epoch in range(100):
         loss=model.fit(img,label,alpha=learning_rate)
         if i%100==0:
             acc = test(100)
-            print('epoch:%s---step:%s---loss:%.5f----acc:%s'%(epoch,i,loss/batch_size,acc))
+            print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+'  epoch:%s---step:%s---loss:%.5f----acc:%s'%(epoch,i,loss/batch_size,acc))
             model.save('cnn.pkl')
     acc = test(len(test_images))
     print('test acc：%s'%acc)
