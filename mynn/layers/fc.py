@@ -3,21 +3,20 @@ from functools import reduce
 
 class FullyConnect(object):
     def __init__(self, shape, output_num=2):
+        shape = [int(x) for x in shape]
         self.input_shape = shape
         self.batchsize = shape[0]
         self.layertype='fc'
         input_len = reduce(lambda x, y: x * y, shape[1:])
-
-        self.weights = np.random.standard_normal((input_len, output_num))/100
-        self.bias = np.random.standard_normal(output_num)/100
-
+        self.weights = np.random.randn(input_len, output_num)/100
+        self.bias = np.random.randn(output_num)/100
         self.output_shape = [self.batchsize, output_num]
         self.w_gradient = np.zeros(self.weights.shape)
         self.b_gradient = np.zeros(self.bias.shape)
 
     def forward(self, x):
         if len(x.shape)>2:
-            self.x = x.reshape([self.batchsize, -1])
+            self.x = x.reshape([x.shape[0], -1])
         else:
             self.x=x
         output = np.dot(self.x, self.weights)+self.bias

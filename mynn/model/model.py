@@ -10,7 +10,7 @@ class model(object):
         for layer in self.layerlist[:-1]:
             out=layer.forward(out)
         return out
-    def fit(self,x,y):
+    def fit(self,x,y,alpha=0.00001):
         out=x
         for layer in self.layerlist[:-1]:
             out=layer.forward(out)
@@ -24,13 +24,13 @@ class model(object):
             a-=1
         for layer in self.layerlist:
             if layer.layertype == 'fc' or layer.layertype == 'conv':
-                layer.backward()
+                layer.backward(alpha=alpha)
         return loss
     def save(self,name):
         file = open(name, 'wb')
         pickle.dump(self.layerlist,file)
         file.close()
     def load(self,name):
-        f = open(name, 'rb')
-        self.layerlist=pickle.load(f)
-        f.close()
+        file = open(name, 'rb')
+        self.layerlist=pickle.load(file)
+        file.close()
