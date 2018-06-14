@@ -6,6 +6,8 @@ from mynn.dataset import mnist
 from mynn.model import model
 images, labels = mnist.load_mnist('./data/mnist')
 test_images, test_labels = mnist.load_mnist('./data/mnist', 't10k')
+images=images
+test_images=test_images
 batch_size = 64
 fc1=FullyConnect([batch_size,784],40)
 relu=Relu(fc1.output_shape)
@@ -30,13 +32,15 @@ def test():
         if a==y[0]:
             n+=1
     return n/len(test_images)
+learning_rate = 1e-5
+learning_rate_decay = 0.001
 for epoch in range(100):
-    learning_rate = 1e-5
+    learning_rate = learning_rate * 1.0 / (1.0 + learning_rate_decay * epoch)
     for i in range(images.shape[0] // batch_size):
         img = images[i * batch_size:(i + 1) * batch_size]
         label = labels[i * batch_size:(i + 1) * batch_size]
         loss=model.fit(img,label,alpha=learning_rate)
         if i%100==0:
             acc = test()
-            print('epoch:%s---step:%s---loss:%.5f----acc:%s'%(epoch,i,loss/batch_size,acc))
+            print('epoch:%s---step:%s---loss:%.5f----acc:%s---learning_rate:%s'%(epoch,i,loss/batch_size,acc,learning_rate))
             model.save('fc.pkl')
