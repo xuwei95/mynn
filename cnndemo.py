@@ -1,6 +1,5 @@
 import numpy as np
 import time
-
 from mynn.layers.conv import Conv2D
 from mynn.layers.fc import FullyConnect
 from mynn.layers.pooling import MaxPooling
@@ -10,8 +9,6 @@ from mynn.dataset import mnist
 from mynn.model import model
 images, labels = mnist.load_mnist('./data/mnist')
 test_images, test_labels = mnist.load_mnist('./data/mnist', 't10k')
-images=images
-test_images=test_images
 batch_size = 64
 conv1 = Conv2D([batch_size, 28, 28, 1], 12, 5, 1,method='SAME')
 relu1 = Relu(conv1.output_shape)
