@@ -4,10 +4,12 @@ from mynn.layers.softmax import Softmax
 from mynn.layers.relu import Relu
 from mynn.dataset import mnist
 from mynn.model import model
+from mynn.util import np_utils
+
 images, labels = mnist.load_mnist('./data/mnist')
 test_images, test_labels = mnist.load_mnist('./data/mnist', 't10k')
-images=images
-test_images=test_images
+labels = np_utils.to_categorical(labels, num_classes=10)
+test_labels = np_utils.to_categorical(test_labels, num_classes=10)
 batch_size = 64
 fc1=FullyConnect([batch_size,784],40)
 relu=Relu(fc1.output_shape)
@@ -27,9 +29,10 @@ def test():
     for i in range(len(test_images)-1):
         x=test_images[i:i+1]
         y=test_labels[i:i+1]
+        y=np.argmax(y)
         a=model.predict(x)
         a=np.argmax(a[0])
-        if a==y[0]:
+        if a==y:
             n+=1
     return n/len(test_images)
 learning_rate = 1e-5

@@ -9,6 +9,7 @@ class model(object):
         out=x
         for layer in self.layerlist[:-1]:
             out=layer.forward(out)
+        out=self.layerlist[-1].predict(out)
         return out
     def fit(self,x,y,alpha=0.00001):
         out=x
